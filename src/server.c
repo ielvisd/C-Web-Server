@@ -59,6 +59,24 @@ int send_response(int fd, char *header, char *content_type, void *body, int cont
     // IMPLEMENT ME! //
     ///////////////////
 
+    
+    // char response[500000];
+    // char *body = "<h1>Hello, world!</h1>";
+
+    int response_length = strlen(body);
+
+    sprintf(response, "HTTP/1.1 200 OK\n"
+            "Content-Type: text/html\n"
+            "Content-Length: %d\n"
+            "Connection: close\n"
+            "\n"
+            "%s",
+            response_length, body
+        );
+
+    printf("%s", response); // send()
+
+
     // Send it all!
     int rv = send(fd, response, response_length, 0);
 
@@ -189,6 +207,8 @@ int main(void)
     }
 
     printf("webserver: waiting for connections on port %s...\n", PORT);
+
+    resp_404(0);
 
     // This is the main loop that accepts incoming connections and
     // responds to the request. The main parent process
