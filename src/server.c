@@ -59,7 +59,6 @@ int send_response(int fd, char *header, char *content_type, void *body, int cont
     // IMPLEMENT ME! //
     ///////////////////
 
-    
     // char response[500000];
     // char *body = "<h1>Hello, world!</h1>";
 
@@ -127,7 +126,7 @@ void resp_404(int fd)
 
     mime_type = mime_type_get(filepath);
 
-    send_response(fd, "HTTP/1.1 404 NOT FOUND", mime_type, filedata->data, filedata->size);
+    send_response(fd, "HTTP/1.1 404 NOT FOUND\n", mime_type, filedata->data, filedata->size);
 
     file_free(filedata);
 }
@@ -162,6 +161,9 @@ void handle_http_request(int fd, struct cache *cache)
 {
     const int request_buffer_size = 65536; // 64K
     char request[request_buffer_size];
+    char request_type[8];
+    char request_path[1024];
+    char request_protocal[16];
 
     // Read request
     int bytes_recvd = recv(fd, request, request_buffer_size - 1, 0);
@@ -171,6 +173,9 @@ void handle_http_request(int fd, struct cache *cache)
         return;
     }
 
+    sscanf(request, "%s" "%s" "%s", request_type, request_path, request_protocal);
+
+    printf("Got request: type: %s,  path: %s, protocal: %s\n", request_type, request_path, request_protocal);
 
     ///////////////////
     // IMPLEMENT ME! //
@@ -208,7 +213,7 @@ int main(void)
 
     printf("webserver: waiting for connections on port %s...\n", PORT);
 
-    resp_404(0);
+    // resp_404(0);
 
     // This is the main loop that accepts incoming connections and
     // responds to the request. The main parent process
