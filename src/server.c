@@ -248,7 +248,7 @@ void handle_http_request(int fd, struct cache *cache)
         else
         {
             //    Otherwise serve the requested file by calling get_file()
-            get_file(fd, NULL, request_path);
+            get_file(fd, cache, request_path);
         }
     }
     else if (strcmp(request_path, "POST") == 0)

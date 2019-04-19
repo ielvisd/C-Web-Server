@@ -88,6 +88,12 @@ int default_hashf(void *data, int data_size, int bucket_count)
  */
 struct hashtable *hashtable_create(int size, int (*hashf)(void *, int, int))
 {
+
+
+// That's a function pointer. It's basically a callback in C (it's a literal pointer to a function). It's there to allow the hash table user to pass in another hash function other than the default one.
+
+// You can just pass `NULL` to it, which will cause the hash table to use the default hash function.
+
     if (size < 1) {
         size = DEFAULT_SIZE;
     }
